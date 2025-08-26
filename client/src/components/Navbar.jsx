@@ -32,41 +32,42 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-gray-900 text-white shadow-md">
-      {/* Main Navbar */}
-      <div className="flex items-center justify-between px-4 md:px-6 py-3">
+    <nav className="sticky top-0 z-50 w-full bg-gradient-to-r from-blue-700 to-blue-500 shadow-lg">
+      {/* Top Navbar */}
+      <div className="flex items-center justify-between px-4 md:px-8 py-3">
         {/* Logo */}
         <Link
           to={"/"}
-          className="text-lg sm:text-xl md:text-2xl font-bold text-blue-400"
+          className="text-xl md:text-2xl font-extrabold text-white tracking-tight"
         >
-          MERN E-Commerce
+          Ekart
         </Link>
 
-        {/* Search (hidden on small screens) */}
+        {/* Search (desktop only) */}
         <form
           onSubmit={submitHandler}
-          className="hidden md:flex items-center bg-gray-800 rounded-lg px-3 py-1 w-1/2 max-w-md"
+          className="hidden md:flex items-center bg-white rounded-lg px-3 py-2 w-1/2 max-w-lg"
         >
-          <span className="material-symbols-outlined text-gray-400">search</span>
+          <span className="material-symbols-outlined text-gray-500">search</span>
           <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
-            placeholder="Search products..."
-            className="ml-2 bg-transparent outline-none text-white w-full placeholder-gray-400"
+            placeholder="Search for products, brands and more"
+            className="ml-2 bg-transparent outline-none text-gray-800 w-full placeholder-gray-500"
           />
         </form>
 
-        {/* Right Section */}
-        <div className="hidden md:flex items-center space-x-4">
+        {/* Right Section (desktop only) */}
+        <div className="hidden md:flex items-center space-x-5">
           {isAuthenticated ? (
             <>
               {/* Cart */}
-              <Link to={"/cart"} className="relative">
+              <Link to={"/cart"} className="relative flex items-center gap-1 text-white">
                 <FaShoppingBag className="text-2xl" />
+                <span className="text-sm font-medium">Cart</span>
                 {cart?.items?.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-2 py-0.5">
+                  <span className="absolute -top-2 -right-3 bg-red-500 text-xs text-white rounded-full px-2 py-0.5">
                     {cart.items.length}
                   </span>
                 )}
@@ -75,14 +76,14 @@ const Navbar = () => {
               {/* Profile */}
               <Link
                 to={"/profile"}
-                className="px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-700 transition"
+                className="px-3 py-1 rounded-md bg-white text-blue-600 font-medium hover:bg-gray-200 transition"
               >
                 Profile
               </Link>
 
               {/* Logout */}
               <button
-                className="px-3 py-1 rounded-md bg-red-600 hover:bg-red-700 transition"
+                className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition"
                 onClick={() => {
                   logout();
                   navigate("/");
@@ -95,13 +96,13 @@ const Navbar = () => {
             <>
               <Link
                 to={"/login"}
-                className="px-3 py-1 rounded-md bg-gray-600 hover:bg-gray-700 transition"
+                className="px-3 py-1 rounded-md bg-white text-blue-600 font-medium hover:bg-gray-200 transition"
               >
                 Login
               </Link>
               <Link
                 to={"/register"}
-                className="px-3 py-1 rounded-md bg-green-600 hover:bg-green-700 transition"
+                className="px-3 py-1 rounded-md bg-yellow-400 text-blue-900 font-semibold hover:bg-yellow-500 transition"
               >
                 Register
               </Link>
@@ -109,30 +110,43 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+        {/* Mobile Right Icons */}
+        <div className="flex items-center gap-4 md:hidden">
+          {/* Cart Icon - always visible on mobile */}
+          <Link to={"/cart"} className="relative text-white">
+            <FaShoppingBag className="text-2xl" />
+            {cart?.items?.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full px-2 py-0.5">
+                {cart.items.length}
+              </span>
+            )}
+          </Link>
+
+          {/* Menu Button */}
+          <button
+            className="text-2xl text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-800 px-4 py-3 space-y-4">
-          {/* Search */}
+        <div className="md:hidden bg-white border-t px-4 py-4 space-y-4">
+          {/* Search (mobile) */}
           <form
             onSubmit={submitHandler}
-            className="flex items-center bg-gray-700 rounded-lg px-3 py-1"
+            className="flex items-center bg-gray-100 rounded-lg px-3 py-2"
           >
             <span className="material-symbols-outlined text-gray-400">search</span>
             <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               type="text"
-              placeholder="Search products..."
-              className="ml-2 bg-transparent outline-none text-white w-full placeholder-gray-400"
+              placeholder="Search for products..."
+              className="ml-2 bg-transparent outline-none text-gray-800 w-full placeholder-gray-500"
             />
           </form>
 
@@ -141,21 +155,9 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Link
-                  to={"/cart"}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2"
-                >
-                  <FaShoppingBag /> Cart
-                  {cart?.items?.length > 0 && (
-                    <span className="bg-red-500 text-xs rounded-full px-2 py-0.5">
-                      {cart.items.length}
-                    </span>
-                  )}
-                </Link>
-                <Link
                   to={"/profile"}
                   onClick={() => setMenuOpen(false)}
-                  className="px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-700 transition"
+                  className="px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition text-center"
                 >
                   Profile
                 </Link>
@@ -165,7 +167,7 @@ const Navbar = () => {
                     navigate("/");
                     setMenuOpen(false);
                   }}
-                  className="px-3 py-1 rounded-md bg-red-600 hover:bg-red-700 transition"
+                  className="px-3 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-center"
                 >
                   Logout
                 </button>
@@ -175,14 +177,14 @@ const Navbar = () => {
                 <Link
                   to={"/login"}
                   onClick={() => setMenuOpen(false)}
-                  className="px-3 py-1 rounded-md bg-gray-600 hover:bg-gray-700 transition"
+                  className="px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition text-center"
                 >
                   Login
                 </Link>
                 <Link
                   to={"/register"}
                   onClick={() => setMenuOpen(false)}
-                  className="px-3 py-1 rounded-md bg-green-600 hover:bg-green-700 transition"
+                  className="px-3 py-2 rounded-md bg-yellow-400 text-blue-900 font-semibold hover:bg-yellow-500 transition text-center"
                 >
                   Register
                 </Link>
@@ -194,34 +196,34 @@ const Navbar = () => {
 
       {/* Filter Bar (only on Home) */}
       {location.pathname === "/" && (
-        <div className="flex flex-wrap justify-center gap-3 px-4 py-2 bg-gray-800 text-xs sm:text-sm md:text-base">
+        <div className="flex flex-wrap justify-center gap-3 px-4 py-2 bg-blue-50 text-xs sm:text-sm md:text-base">
           <button
             onClick={() => setFilteredData(products)}
-            className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
           >
             No Filter
           </button>
           <button
             onClick={() => filterbyCategory("mobiles")}
-            className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
           >
             Mobiles
           </button>
           <button
             onClick={() => filterbyCategory("laptops")}
-            className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
           >
             Laptops
           </button>
           <button
             onClick={() => filterbyCategory("cameras")}
-            className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
           >
             Cameras
           </button>
           <button
             onClick={() => filterbyCategory("headphones")}
-            className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
           >
             Headphones
           </button>
@@ -229,9 +231,9 @@ const Navbar = () => {
             <button
               key={price}
               onClick={() => filterbyPrice(price)}
-              className="px-3 py-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+              className="px-3 py-1 bg-white text-blue-700 font-medium rounded-md shadow hover:bg-gray-100 transition"
             >
-              {price}
+              ₹{price}
             </button>
           ))}
         </div>
