@@ -1,25 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import RelatedProduct from "./RelatedProduct";
+import AppContext from "../../context/AppContext";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
+  const { addToCart } = useContext(AppContext); // ✅ Get addToCart from context
+  const navigate = useNavigate();
+
   const url = "https://ecommerce-razorpay.onrender.com/api";
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const api = await axios.get(`${url}/product/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      setProduct(api.data.product);
+      try {
+        const api = await axios.get(`${url}/product/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        });
+        setProduct(api.data.product);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
     };
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product._id, product.title, product.price, 1, product.imgSrc);
+    }
+  };
 
   return (
     <>
@@ -47,10 +61,16 @@ const ProductDetail = () => {
 
           {/* Buttons */}
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
-            <button className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 transition">
+            <button
+              onClick={() => navigate("/checkout")}
+              className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 transition"
+            >
               Buy Now
             </button>
-            <button className="px-6 py-2 bg-yellow-400 text-gray-900 font-bold rounded-lg shadow-md hover:bg-yellow-500 transition">
+            <button
+              onClick={handleAddToCart}
+              className="px-6 py-2 bg-yellow-400 text-gray-900 font-bold rounded-lg shadow-md hover:bg-yellow-500 transition"
+            >
               Add To Cart
             </button>
           </div>
