@@ -14,7 +14,7 @@ import Cart from './components/Cart'
 import Address from './components/Address'
 import Checkout from './components/Checkout'
 import OrderConfirmation from './components/OrderConfirmation'
-import Carousel from "./components/Carousel";
+;
 import Footer from "./components/Footer";
 
 
@@ -25,7 +25,6 @@ const App = () => {
   return (
     <Router>
       <Navbar />
-      <Carousel />
       <ToastContainer />
       <Routes>
         <Route path="/" element={<ShowProduct />} />

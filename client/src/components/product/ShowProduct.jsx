@@ -2,15 +2,17 @@ import React, { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import GaneshChaturthiSlider from "../offers/GaneshChaturthiSlider";
+import Carousel from "../Carousel"
 
 const ShowProduct = () => {
   const { filteredData, addToCart } = useContext(AppContext);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Carousal */}
+      <Carousel />
       {/* Special Offers */}
       <GaneshChaturthiSlider />
-
       {/* Title */}
       <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-8 border-b pb-3">
         ✨ Explore Our Products
