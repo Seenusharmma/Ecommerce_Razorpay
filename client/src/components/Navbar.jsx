@@ -40,7 +40,7 @@ const Navbar = () => {
           to={"/"}
           className="text-xl md:text-2xl font-extrabold text-white tracking-tight"
         >
-          Ekart
+          MyCart
         </Link>
 
         {/* Search (desktop only) */}

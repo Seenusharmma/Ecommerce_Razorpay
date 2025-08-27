@@ -10,6 +10,17 @@ const Login = () => {
     password: "",
   });
 
+  //admin const { login } = useAuth();
+
+const handleLogin = async () => {
+  const res = await axios.post("/api/login", { email, password });
+  if (res.data.success) {
+    login(res.data.user); // user should have {name, email, role}
+    navigate("/");
+  }
+};
+
+
   const onChangerHandler = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
